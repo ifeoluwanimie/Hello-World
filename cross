@@ -1,0 +1,64 @@
+Here's a breakdown of how to create a service file for a GitHub runner and configure it to start on boot using systemd (common for many Linux distributions):
+
+Prerequisites
+
+GitHub Runner installed: Assume you've already installed the GitHub runner on your Linux system following the official instructions (https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners).
+Root or sudo privileges: You'll need administrative privileges to create and manage the service file.
+Steps
+
+Create a Service File
+
+Use a text editor (like nano or vim) to create a new service file:
+
+Bash
+sudo nano /etc/systemd/system/github-runner.service
+Use code with caution.
+content_copy
+Paste the following content into the file, making necessary adjustments:
+
+[Unit]
+Description=GitHub Actions Runner
+After=network.target
+
+[Service]
+WorkingDirectory=<path_to_runner_directory> 
+ExecStart=<path_to_runner>/run.sh
+Restart=always
+User=root # Or a dedicated user for the runner 
+
+[Install]
+WantedBy=multi-user.target
+Replace placeholders:
+<path_to_runner_directory>: The directory where the GitHub runner is installed.
+<path_to_runner>: The full path to the runner executable.
+Enable the Service
+
+Bash
+sudo systemctl enable github-runner.service
+Use code with caution.
+content_copy
+Start the Service
+
+Bash
+sudo systemctl start github-runner.service
+Use code with caution.
+content_copy
+Verify Status (Optional)
+
+Bash
+sudo systemctl status github-runner.service
+Use code with caution.
+content_copy
+Explanation
+
+[Unit] Section: Provides metadata and dependencies (e.g., starting after the network is available).
+[Service] Section: Specifies how to run the service:
+WorkingDirectory: The directory the runner should operate from.
+ExecStart: The command to run the GitHub runner (usually the run.sh script).
+Restart: Tells systemd to automatically restart the runner if it fails.
+User: The user account the runner should execute as (security consideration - you might create a dedicated user for the runner instead of using root).
+[Install] Section: Controls when the service starts during boot up.
+Additional Considerations
+
+Log Files: Runner logs may be in their directory or /var/log, depending on your system's configurations.
+Updates: Remember to update your service file if you install the GitHub runner in a different location or the executable name changes.
