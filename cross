@@ -62,6 +62,3 @@ Additional Considerations
 
 Log Files: Runner logs may be in their directory or /var/log, depending on your system's configurations.
 Updates: Remember to update your service file if you install the GitHub runner in a different location or the executable name changes.
-
-
-
